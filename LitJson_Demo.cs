@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LitJson;
 using System.Runtime.ExceptionServices;
+using System.IO;
 
 public class Armor
 {
@@ -26,6 +27,7 @@ public class LitJson_Demo : MonoBehaviour
 
         //FuncForArmor();
         FuncForArmor2();
+        
     }
 
     // Update is called once per frame
@@ -89,12 +91,41 @@ public class LitJson_Demo : MonoBehaviour
 
         Debug.Log(ArmorArray.ToJson());
 
-        ReleaseJson(ArmorArray);
+        //ReleaseJson(ArmorArray);
+
+        WriteJson(ArmorArray);
+
+        ReadJson();
     }
 
     //litjson第二种解析json文件方法
-    private void ReleaseJson(JsonData JSDT)
+    //private void ReleaseJson(JsonData JSDT)
+    //{
+    //    foreach(JsonData Item in JSDT)
+    //    {
+    //        Debug.Log(Item["Name"].ToString());
+    //        Debug.Log((int)Item["Heaviness"]);
+    //        Debug.Log((int)Item["Defence"]);
+    //    }
+    //}
+
+    //将json文件创建至指定文件夹
+    private void WriteJson(JsonData JSDT)
     {
+            string Jsons = JsonMapper.ToJson(JSDT); 
+            string PathOfJson = Path.Combine(@"D:\u3dpro","JsonProject","Assets","Resource","Json", "JsonDemo.json");
+            File.WriteAllText(PathOfJson, Jsons);
+        
+    }
+
+    //从指定文件夹读取json文件
+    private void ReadJson()
+    {
+        string PathOfJson = Path.Combine(@"D:\u3dpro", "JsonProject", "Assets", "Resource", "Json", "JsonDemo.json");
+        string JsonFile = File.ReadAllText(PathOfJson);
+        JsonData JSDT = new JsonData();
+        JSDT = JsonMapper.ToObject(JsonFile);
+
         foreach(JsonData Item in JSDT)
         {
             Debug.Log(Item["Name"].ToString());
